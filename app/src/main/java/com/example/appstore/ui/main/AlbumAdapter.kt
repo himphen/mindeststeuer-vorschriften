@@ -20,7 +20,7 @@ class AlbumAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.collectionId == newItem.collectionId
         }
     }
 
@@ -49,8 +49,8 @@ class AlbumAdapter(
                 val itemBinding = holder.viewBinding
                 val item = getItem(position)
                 itemBinding.coverIv.load(item.imageUrl)
-                itemBinding.titleTv.text = item.name
-                itemBinding.contentTv.text = "$" + item.price.toString()
+                itemBinding.titleTv.text = item.collectionName
+                itemBinding.contentTv.text = "$" + item.collectionPrice.toString()
                 itemBinding.bookmarkIv.setOnClickListener {
                     itemClickListener.onBookmarkItemClicked(item)
                 }

@@ -1,8 +1,10 @@
 package com.example.appstore.core
 
 import com.example.appstore.api.ApiManager
+import com.example.appstore.db.LocalDatabase
 import com.example.appstore.domain.album.AlbumInteractor
 import com.example.appstore.domain.album.GetAlbumsFromAPI
+import com.example.appstore.domain.album.GetBookmarkedAsLiveData
 import com.example.appstore.repository.AlbumRepository
 import com.example.appstore.ui.main.AlbumViewModel
 import org.koin.android.ext.koin.androidContext
@@ -21,10 +23,13 @@ val koinUIModule: Module = module {
 }
 
 val koinRepositoryModule: Module = module {
+    single { LocalDatabase.getInstance(androidContext()) }
+    single { get<LocalDatabase>().albumDao() }
     single { AlbumRepository(get()) }
 }
 
 val koinUseCaseModule: Module = module {
-    single { AlbumInteractor(get()) }
+    single { AlbumInteractor(get(), get()) }
     single { GetAlbumsFromAPI(get()) }
+    single { GetBookmarkedAsLiveData(get()) }
 }

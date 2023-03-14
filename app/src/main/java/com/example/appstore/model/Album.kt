@@ -1,10 +1,11 @@
 package com.example.appstore.model
 
 class Album(
-    val id: Int,
-    val name: String,
-    val price: Double,
+    val collectionId: Long,
+    val collectionName: String,
+    val collectionPrice: Double,
     val imageUrl: String,
+    var isBookmarked: Boolean = false
 ) {
 
 

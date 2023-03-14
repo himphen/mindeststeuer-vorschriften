@@ -1,5 +1,6 @@
 package com.example.appstore.ui.main
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.appstore.domain.album.AlbumInteractor
@@ -13,7 +14,35 @@ class AlbumViewModel(
     private val albumInteractor: AlbumInteractor,
 ) : BaseViewModel() {
 
-    val albumList = MutableLiveData<List<Album>>()
+    private val albumListLiveData = MutableLiveData<List<Album>>()
+    private val bookmarkedListLiveData = albumInteractor.getBookmarkedAsLiveData()
+
+    var albumListWithBookmarkedData = MediatorLiveData<List<Album>>()
+
+    init {
+        albumListWithBookmarkedData.addSource(albumListLiveData) {
+            combineList()
+        }
+
+        albumListWithBookmarkedData.addSource(bookmarkedListLiveData) {
+            combineList()
+        }
+    }
+
+    private fun combineList() {
+        val bookmarkedList = bookmarkedListLiveData.value ?: emptyList()
+        val bookmarkedIdList = bookmarkedList.map {
+            it.collectionId
+        }
+
+        val newData = albumListLiveData.value?.map {
+            it.isBookmarked = bookmarkedIdList.contains(it.collectionId)
+            return@map it
+        } ?: emptyList()
+
+
+        albumListWithBookmarkedData.postValue(newData)
+    }
 
     fun getListFromAPI() {
         val coroutineExceptionHandler = CoroutineExceptionHandler { _, t -> run {} }
@@ -21,7 +50,7 @@ class AlbumViewModel(
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val data = albumInteractor.getAlbumsFromAPI.invoke("Jack Johnson")
 
-            albumList.postValue(data?.map {
+            albumListLiveData.postValue(data?.map {
                 Album.convertFrom(it)
             } ?: emptyList())
         }

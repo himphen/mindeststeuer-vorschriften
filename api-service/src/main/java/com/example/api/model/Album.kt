@@ -20,7 +20,7 @@ data class Album(
     @SerializedName("collectionExplicitness")
     val collectionExplicitness: String,
     @SerializedName("collectionId")
-    val collectionId: Int,
+    val collectionId: Long,
     @SerializedName("collectionName")
     val collectionName: String,
     @SerializedName("collectionPrice")
