@@ -41,7 +41,8 @@ class App : Application() {
             modules(
                 koinServiceModule,
                 koinRepositoryModule,
-                koinUIModule
+                koinUIModule,
+                koinUseCaseModule
             )
         }
     }
