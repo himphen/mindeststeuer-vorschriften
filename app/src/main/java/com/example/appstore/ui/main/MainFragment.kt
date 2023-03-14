@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
 import com.example.appstore.databinding.FragmentViewPagerConatinerBinding
 import com.example.appstore.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-/**
- * Created by himphen on 21/5/16.
- */
 class MainFragment : BaseFragment<FragmentViewPagerConatinerBinding>() {
 
     override fun getViewBinding(
@@ -23,8 +21,11 @@ class MainFragment : BaseFragment<FragmentViewPagerConatinerBinding>() {
         super.onViewCreated(view, savedInstanceState)
         val viewBinding = viewBinding!!
         val adapter = MainFragmentPagerAdapter(this)
-        viewBinding.viewPager.adapter = adapter
-        viewBinding.viewPager.isUserInputEnabled = false
+        viewBinding.viewPager.apply {
+            this.adapter = adapter
+            isUserInputEnabled = false
+            offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+        }
 
         TabLayoutMediator(viewBinding.tabLayout, viewBinding.viewPager) { tab, position ->
             tab.customView = adapter.getTabView(position)

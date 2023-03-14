@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.appstore.databinding.ItemAlbumBinding
 import com.example.appstore.model.Album
 
@@ -46,8 +47,12 @@ class AlbumAdapter(
         when (holder) {
             is ItemAlbumViewHolder -> {
                 val itemBinding = holder.viewBinding
+                val item = getItem(position)
+                itemBinding.coverIv.load(item.imageUrl)
+                itemBinding.titleTv.text = item.name
+                itemBinding.contentTv.text = "$" + item.price.toString()
                 itemBinding.bookmarkIv.setOnClickListener {
-                    itemClickListener.onBookmarkItemClicked(getItem(position))
+                    itemClickListener.onBookmarkItemClicked(item)
                 }
             }
         }
