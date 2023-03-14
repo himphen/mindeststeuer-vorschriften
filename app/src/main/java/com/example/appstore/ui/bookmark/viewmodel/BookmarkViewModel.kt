@@ -1,4 +1,4 @@
-package com.example.appstore.ui.album.viewmodel
+package com.example.appstore.ui.bookmark.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,24 +11,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-class AlbumViewModel(
+class BookmarkViewModel(
     private val albumInteractor: AlbumInteractor,
 ) : BaseViewModel() {
 
-    val bookmarkedAdded = MutableSharedFlow<Boolean>()
     val bookmarkedRemoved = MutableSharedFlow<Boolean>()
 
-    private val albumListApiLiveData = MutableLiveData<List<Album>>()
+    private val albumListLiveData = MutableLiveData<List<Album>>()
     private val bookmarkedListLiveData = albumInteractor.getBookmarkedAsLiveData()
 
-    var albumListWithBookmarkedLiveData = MediatorLiveData<List<Album>>()
+    var bookmarkedAlbumListLiveData = MediatorLiveData<List<Album>>()
 
     init {
-        albumListWithBookmarkedLiveData.addSource(albumListApiLiveData) {
+        bookmarkedAlbumListLiveData.addSource(albumListLiveData) {
             combineList()
         }
 
-        albumListWithBookmarkedLiveData.addSource(bookmarkedListLiveData) {
+        bookmarkedAlbumListLiveData.addSource(bookmarkedListLiveData) {
             combineList()
         }
     }
@@ -39,14 +38,19 @@ class AlbumViewModel(
             it.collectionId
         }
 
-        val newData = albumListApiLiveData.value?.map {
+        val newData = albumListLiveData.value?.mapNotNull {
             val new = it.copy()
             new.isBookmarked = bookmarkedIdList.contains(new.collectionId)
-            return@map new
+
+            if (new.isBookmarked) {
+                return@mapNotNull new
+            } else {
+                return@mapNotNull null
+            }
         } ?: emptyList()
 
 
-        albumListWithBookmarkedLiveData.postValue(newData)
+        bookmarkedAlbumListLiveData.postValue(newData)
     }
 
     fun getListFromAPI() {
@@ -55,16 +59,9 @@ class AlbumViewModel(
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val data = albumInteractor.getAlbumsFromAPI.invoke("Jack Johnson")
 
-            albumListApiLiveData.postValue(data?.map {
+            albumListLiveData.postValue(data?.map {
                 Album.convertFrom(it)
             } ?: emptyList())
-        }
-    }
-
-    fun addBookmarked(collectionId: Long) {
-        viewModelScope.launch {
-            albumInteractor.addBookmarked(collectionId)
-            bookmarkedAdded.emit(true)
         }
     }
 

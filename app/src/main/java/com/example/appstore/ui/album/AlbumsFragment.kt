@@ -34,7 +34,7 @@ class AlbumsFragment : BaseFragment<FragmentAlbumsBinding>() {
     }
 
     private fun initEvent() {
-        viewModel.albumListWithBookmarkedData.observe(viewLifecycleOwner) {
+        viewModel.albumListWithBookmarkedLiveData.observe(viewLifecycleOwner) {
             // show data
             adapter.submitList(it)
         }

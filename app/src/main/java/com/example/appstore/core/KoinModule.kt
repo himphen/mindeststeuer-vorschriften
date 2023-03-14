@@ -9,6 +9,7 @@ import com.example.appstore.domain.album.GetBookmarkedAsLiveData
 import com.example.appstore.domain.album.RemoveBookmarked
 import com.example.appstore.repository.AlbumRepository
 import com.example.appstore.ui.album.viewmodel.AlbumViewModel
+import com.example.appstore.ui.bookmark.viewmodel.BookmarkViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -21,6 +22,9 @@ val koinServiceModule: Module = module {
 val koinUIModule: Module = module {
     viewModel {
         AlbumViewModel(get())
+    }
+    viewModel {
+        BookmarkViewModel(get())
     }
 }
 
