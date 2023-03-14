@@ -8,6 +8,7 @@ import com.example.appstore.domain.album.GetAlbumsFromAPI
 import com.example.appstore.domain.album.GetBookmarkedAsLiveData
 import com.example.appstore.domain.album.RemoveBookmarked
 import com.example.appstore.repository.AlbumRepository
+import com.example.appstore.repository.BookmarkRepository
 import com.example.appstore.ui.album.viewmodel.AlbumViewModel
 import com.example.appstore.ui.bookmark.viewmodel.BookmarkViewModel
 import org.koin.android.ext.koin.androidContext
@@ -32,6 +33,7 @@ val koinRepositoryModule: Module = module {
     single { LocalDatabase.getInstance(androidContext()) }
     single { get<LocalDatabase>().albumDao() }
     single { AlbumRepository(get()) }
+    single { BookmarkRepository(get()) }
 }
 
 val koinUseCaseModule: Module = module {
