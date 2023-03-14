@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AppStore</string>
+
+    <string name="main_tab_title_1">Albums</string>
+    <string name="main_tab_title_2">Bookmark</string>
+    <string-array name="main_tab_title" translatable="false">
+        <item>@string/main_tab_title_1</item>
+        <item>@string/main_tab_title_2</item>
+    </string-array>
 </resources>
