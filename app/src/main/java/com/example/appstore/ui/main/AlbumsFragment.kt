@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.appstore.databinding.FragmentAlbumsBinding
 import com.example.appstore.model.Album
 import com.example.appstore.ui.base.BaseFragment
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AlbumsFragment : BaseFragment<FragmentAlbumsBinding>() {
@@ -35,19 +37,36 @@ class AlbumsFragment : BaseFragment<FragmentAlbumsBinding>() {
             // show data
             adapter.submitList(it)
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.bookmarkedAdded.collect {
+                Toast.makeText(context, "Added Bookmark", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.bookmarkedRemoved.collect {
+                Toast.makeText(context, "Removed Bookmark", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     private fun initUi() {
         // init recyclerview
+        val viewBinding = viewBinding!!
 
         adapter = AlbumAdapter(object : AlbumAdapter.ItemClickListener {
-            override fun onBookmarkItemClicked(gridItem: Album) {
-                // TODO
+            override fun onBookmarkItemClicked(item: Album) {
+                if (item.isBookmarked) {
+                    viewModel.removeBookmarked(item.collectionId)
+                } else {
+                    viewModel.addBookmarked(item.collectionId)
+                }
             }
         })
-        viewBinding!!.rvlist.adapter = adapter
-        viewBinding!!.rvlist.layoutManager = LinearLayoutManager(activity)
-
+        viewBinding.rvlist.adapter = adapter
+        viewBinding.rvlist.itemAnimator = null
     }
 
 

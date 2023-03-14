@@ -2,9 +2,11 @@ package com.example.appstore.core
 
 import com.example.appstore.api.ApiManager
 import com.example.appstore.db.LocalDatabase
+import com.example.appstore.domain.album.AddBookmarked
 import com.example.appstore.domain.album.AlbumInteractor
 import com.example.appstore.domain.album.GetAlbumsFromAPI
 import com.example.appstore.domain.album.GetBookmarkedAsLiveData
+import com.example.appstore.domain.album.RemoveBookmarked
 import com.example.appstore.repository.AlbumRepository
 import com.example.appstore.ui.main.AlbumViewModel
 import org.koin.android.ext.koin.androidContext
@@ -29,7 +31,9 @@ val koinRepositoryModule: Module = module {
 }
 
 val koinUseCaseModule: Module = module {
-    single { AlbumInteractor(get(), get()) }
+    single { AlbumInteractor(get(), get(), get(), get()) }
     single { GetAlbumsFromAPI(get()) }
     single { GetBookmarkedAsLiveData(get()) }
+    single { AddBookmarked(get()) }
+    single { RemoveBookmarked(get()) }
 }

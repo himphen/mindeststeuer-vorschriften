@@ -8,11 +8,15 @@ import com.example.appstore.model.Album
 import com.example.appstore.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class AlbumViewModel(
     private val albumInteractor: AlbumInteractor,
 ) : BaseViewModel() {
+
+    val bookmarkedAdded = MutableSharedFlow<Boolean>()
+    val bookmarkedRemoved = MutableSharedFlow<Boolean>()
 
     private val albumListLiveData = MutableLiveData<List<Album>>()
     private val bookmarkedListLiveData = albumInteractor.getBookmarkedAsLiveData()
@@ -36,8 +40,9 @@ class AlbumViewModel(
         }
 
         val newData = albumListLiveData.value?.map {
-            it.isBookmarked = bookmarkedIdList.contains(it.collectionId)
-            return@map it
+            val new = it.copy()
+            new.isBookmarked = bookmarkedIdList.contains(new.collectionId)
+            return@map new
         } ?: emptyList()
 
 
@@ -53,6 +58,20 @@ class AlbumViewModel(
             albumListLiveData.postValue(data?.map {
                 Album.convertFrom(it)
             } ?: emptyList())
+        }
+    }
+
+    fun addBookmarked(collectionId: Long) {
+        viewModelScope.launch {
+            albumInteractor.addBookmarked(collectionId)
+            bookmarkedAdded.emit(true)
+        }
+    }
+
+    fun removeBookmarked(collectionId: Long) {
+        viewModelScope.launch {
+            albumInteractor.removeBookmarked(collectionId)
+            bookmarkedRemoved.emit(true)
         }
     }
 }

@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.appstore.databinding.ItemAlbumBinding
 import com.example.appstore.model.Album
+import com.example.appstore.ui.main.viewmodel.AlbumItemViewModel
 
 class AlbumAdapter(
     private val itemClickListener: ItemClickListener
@@ -16,16 +16,16 @@ class AlbumAdapter(
 
     class DiffCallback : DiffUtil.ItemCallback<Album>() {
         override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem == newItem
+            return oldItem.collectionId == newItem.collectionId
         }
 
         override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem.collectionId == newItem.collectionId
+            return oldItem == newItem
         }
     }
 
     interface ItemClickListener {
-        fun onBookmarkItemClicked(gridItem: Album)
+        fun onBookmarkItemClicked(item: Album)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,19 +38,13 @@ class AlbumAdapter(
         )
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return 1
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemAlbumViewHolder -> {
                 val itemBinding = holder.viewBinding
                 val item = getItem(position)
-                itemBinding.coverIv.load(item.imageUrl)
-                itemBinding.titleTv.text = item.collectionName
-                itemBinding.contentTv.text = "$" + item.collectionPrice.toString()
+                itemBinding.viewModel = AlbumItemViewModel(item)
                 itemBinding.bookmarkIv.setOnClickListener {
                     itemClickListener.onBookmarkItemClicked(item)
                 }
