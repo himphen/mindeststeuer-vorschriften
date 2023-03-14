@@ -1,4 +1,4 @@
-package com.example.appstore.ui.main
+package com.example.appstore.ui.bookmark
 
 import android.os.Bundle
 import android.view.LayoutInflater

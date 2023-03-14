@@ -1,4 +1,4 @@
-package com.example.appstore.ui.main
+package com.example.appstore.ui.album.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData

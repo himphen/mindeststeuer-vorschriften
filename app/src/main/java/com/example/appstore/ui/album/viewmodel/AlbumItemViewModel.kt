@@ -1,4 +1,4 @@
-package com.example.appstore.ui.main.viewmodel
+package com.example.appstore.ui.album.viewmodel
 
 import com.example.appstore.R
 import com.example.appstore.model.Album

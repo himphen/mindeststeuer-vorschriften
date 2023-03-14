@@ -1,4 +1,4 @@
-package com.example.appstore.ui.main
+package com.example.appstore.ui.album
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.appstore.databinding.FragmentAlbumsBinding
 import com.example.appstore.model.Album
+import com.example.appstore.ui.album.viewmodel.AlbumViewModel
 import com.example.appstore.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

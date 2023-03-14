@@ -5,6 +5,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.appstore.R
+import com.example.appstore.ui.album.AlbumsFragment
+import com.example.appstore.ui.bookmark.BookmarkFragment
 
 class MainFragmentPagerAdapter(
     private val fragment: Fragment

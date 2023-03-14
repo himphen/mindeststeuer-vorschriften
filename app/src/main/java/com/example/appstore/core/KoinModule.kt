@@ -8,7 +8,7 @@ import com.example.appstore.domain.album.GetAlbumsFromAPI
 import com.example.appstore.domain.album.GetBookmarkedAsLiveData
 import com.example.appstore.domain.album.RemoveBookmarked
 import com.example.appstore.repository.AlbumRepository
-import com.example.appstore.ui.main.AlbumViewModel
+import com.example.appstore.ui.album.viewmodel.AlbumViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module

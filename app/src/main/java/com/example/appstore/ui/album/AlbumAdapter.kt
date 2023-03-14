@@ -1,4 +1,4 @@
-package com.example.appstore.ui.main
+package com.example.appstore.ui.album
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appstore.databinding.ItemAlbumBinding
 import com.example.appstore.model.Album
-import com.example.appstore.ui.main.viewmodel.AlbumItemViewModel
+import com.example.appstore.ui.album.viewmodel.AlbumItemViewModel
 
 class AlbumAdapter(
     private val itemClickListener: ItemClickListener
